@@ -4,7 +4,8 @@ import java.net.Socket;
 
 public class Server {
 
-    public static final int PORT = 5000;
+   public static final int PORT = 6000;
+
     public static final int BOARD_WIDTH = 200;
     public static final int BOARD_HEIGHT = 100;
     public static final int NOTE_WIDTH = 20;

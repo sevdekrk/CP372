@@ -6,7 +6,7 @@ public class Client {
 
     public static void main(String[] args) {
         try (
-            Socket socket = new Socket("localhost", 5000);
+            Socket socket = new Socket("localhost", 6000);
             BufferedReader in = new BufferedReader(
                 new InputStreamReader(socket.getInputStream()));
             PrintWriter out = new PrintWriter(
@@ -19,7 +19,8 @@ public class Client {
                 System.out.print("> ");
                 String input = scanner.nextLine();
                 out.println(input);
-                System.out.println(in.readLine());
+                System.out.println(in.readLine().replace("|", "\n"));
+
             }
 
         } catch (IOException e) {

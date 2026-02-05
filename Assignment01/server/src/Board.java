@@ -70,17 +70,17 @@ public class Board {
         }
     }
 
-    public String getNotes() {
-        lock.lock();
-        try {
-            StringBuilder sb = new StringBuilder();
-            sb.append("OK ").append(notes.size());
-            for (Note n : notes) {
-                sb.append("\n").append(n);
-            }
-            return sb.toString();
-        } finally {
-            lock.unlock();
+public String getNotes() {
+    lock.lock();
+    try {
+        StringBuilder sb = new StringBuilder();
+        sb.append("OK ").append(notes.size());
+        for (Note n : notes) {
+            sb.append("|").append(n); // use | instead of newline
+        }
+        return sb.toString();
+    } finally {
+        lock.unlock();
         }
     }
 }
