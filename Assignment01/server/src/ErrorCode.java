@@ -11,12 +11,9 @@ public enum ErrorCode {
 
    private final String code;
 
-
    ErrorCode(String code) {
        this.code = code;
    }
-
-
    public String msg(String detail) {
        if (detail == null || detail.isBlank()) {
            return "ERROR " + code;
