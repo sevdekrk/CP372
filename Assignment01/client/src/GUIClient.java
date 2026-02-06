@@ -8,30 +8,30 @@ import java.util.Scanner;
 
 public class GUIClient extends JFrame {
 
-    // Networking
+    //networking
     private Socket socket;
     private PrintWriter out;
     private BufferedReader in;
 
-    // GUI components
+    //gui
     private JTextField ipField, portField;
     private JButton connectBtn, disconnectBtn;
     private JTextArea outputArea;
 
-    // POST
+    //post
     private JTextField postX, postY, postColor;
     private JTextArea postMsg;
     private JButton postBtn;
 
-    // PIN/UNPIN
+    //pin and unpin
     private JTextField pinX, pinY;
     private JButton pinBtn, unpinBtn;
 
-    // GET
+    //get
     private JButton getPinsBtn, getNotesBtn;
     private JTextField getColor, getContains, getRefersTo;
 
-    // CLEAR/ SHAKE
+    //clear shake
     private JButton clearBtn, shakeBtn;
 
     public GUIClient() {
@@ -40,7 +40,7 @@ public class GUIClient extends JFrame {
         setSize(800, 600);
         setLayout(new BorderLayout());
 
-        // Top panel for IP/Port
+        // Top panel
         JPanel topPanel = new JPanel();
         topPanel.add(new JLabel("IP:"));
         ipField = new JTextField("localhost", 10);
@@ -57,17 +57,17 @@ public class GUIClient extends JFrame {
         topPanel.add(disconnectBtn);
         add(topPanel, BorderLayout.NORTH);
 
-        // Center: output area
+        // output area
         outputArea = new JTextArea();
         outputArea.setEditable(false);
         JScrollPane scroll = new JScrollPane(outputArea);
         add(scroll, BorderLayout.CENTER);
 
-        // Right panel for commands
+        // Right panel will have the comands
         JPanel rightPanel = new JPanel();
         rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
 
-        // POST panel
+        //POST panel
         JPanel postPanel = new JPanel(new GridLayout(5, 2));
         postPanel.setBorder(BorderFactory.createTitledBorder("POST Note"));
         postPanel.add(new JLabel("X:"));
@@ -101,7 +101,7 @@ public class GUIClient extends JFrame {
         pinPanel.add(unpinBtn);
         rightPanel.add(pinPanel);
 
-        // GET panel
+        //GET panel
         JPanel getPanel = new JPanel(new GridLayout(4, 2));
         getPanel.setBorder(BorderFactory.createTitledBorder("GET Notes / Pins"));
         getPanel.add(new JLabel("Color:"));
@@ -119,7 +119,7 @@ public class GUIClient extends JFrame {
         getPanel.add(getNotesBtn);
         rightPanel.add(getPanel);
 
-        // CLEAR / SHAKE
+        //CLEARand SHAKE
         JPanel clearPanel = new JPanel(new GridLayout(1, 2));
         clearPanel.setBorder(BorderFactory.createTitledBorder("Board Actions"));
         clearBtn = new JButton("CLEAR");
@@ -130,7 +130,7 @@ public class GUIClient extends JFrame {
 
         add(rightPanel, BorderLayout.EAST);
 
-        // Button actions
+        //Button actions
         connectBtn.addActionListener(e -> connect());
         disconnectBtn.addActionListener(e -> disconnect());
         postBtn.addActionListener(e -> sendPost());
@@ -141,8 +141,7 @@ public class GUIClient extends JFrame {
         clearBtn.addActionListener(e -> sendClear());
         shakeBtn.addActionListener(e -> sendShake());
     }
-
-    // Networking methods
+    //Networking methods
     private void connect() {
         try {
             String ip = ipField.getText().trim();
@@ -151,18 +150,16 @@ public class GUIClient extends JFrame {
             out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()), true);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-            // Read handshake (3 lines)
+            // Read handshakes
             outputArea.append(in.readLine() + "\n");
             outputArea.append(in.readLine() + "\n");
             outputArea.append(in.readLine() + "\n");
-
             connectBtn.setEnabled(false);
             disconnectBtn.setEnabled(true);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Connection failed: " + ex.getMessage());
         }
     }
-
     private void disconnect() {
         try {
             sendCommand("DISCONNECT");
@@ -173,7 +170,6 @@ public class GUIClient extends JFrame {
             JOptionPane.showMessageDialog(this, "Error disconnecting: " + ex.getMessage());
         }
     }
-
     private void sendCommand(String cmd) {
         try {
             out.println(cmd);
@@ -196,8 +192,7 @@ public class GUIClient extends JFrame {
             outputArea.append("Server error: " + e.getMessage() + "\n");
         }
     }
-
-    // POST
+    //POST
     private void sendPost() {
         String x = postX.getText().trim();
         String y = postY.getText().trim();
@@ -205,16 +200,14 @@ public class GUIClient extends JFrame {
         String msg = postMsg.getText().trim();
         sendCommand("POST " + x + " " + y + " " + color + " " + msg);
     }
-
-    // PIN / UNPIN
+    //PIN / UNPIN
     private void sendPin() {
         sendCommand("PIN " + pinX.getText().trim() + " " + pinY.getText().trim());
     }
     private void sendUnpin() {
         sendCommand("UNPIN " + pinX.getText().trim() + " " + pinY.getText().trim());
     }
-
-    // GET
+    //GET
     private void sendGetPins() {
         sendCommand("GET PINS");
     }
@@ -226,8 +219,7 @@ public class GUIClient extends JFrame {
         if (!getRefersTo.getText().trim().isEmpty()) cmd += " refersTo=" + getRefersTo.getText().trim();
         sendCommand(cmd);
     }
-
-    // CLEAR / SHAKE
+    //CLEARand  SHAKE comamnds 
     private void sendClear() { sendCommand("CLEAR"); }
     private void sendShake() { sendCommand("SHAKE"); }
 
