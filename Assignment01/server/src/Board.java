@@ -8,10 +8,9 @@ public class Board {
     private final List<Pin> pins = new ArrayList<>();
     private final ReentrantLock lock = new ReentrantLock();
 
-    // Store valid colors passed from server
+    // valid colours from the server. 
     private final Set<String> colorSet;
-
-    // Updated constructor: now accepts custom colors
+    //updated constructor 
     public Board(int w, int h, int nw, int nh, List<String> validColors) {
         this.width = w;
         this.height = h;
@@ -20,7 +19,7 @@ public class Board {
         this.colorSet = new HashSet<>(validColors);
     }
 
-    // Getters for handshake
+    //getters for handshake the 
     public int getBoardWidth() { return width; }
     public int getBoardHeight() { return height; }
     public int getNoteWidth() { return noteW; }
@@ -86,7 +85,6 @@ public class Board {
             lock.unlock();
         }
     }
-
     public String shake() {
         lock.lock();
         try {
@@ -96,7 +94,6 @@ public class Board {
             lock.unlock();
         }
     }
-
     public String clear() {
         lock.lock();
         try {
@@ -107,7 +104,6 @@ public class Board {
             lock.unlock();
         }
     }
-
     // GET PINS response
     public String getPinsResponse() {
         lock.lock();
@@ -123,12 +119,12 @@ public class Board {
         }
     }
 
-    // GET notes with filters
+    //GET notes with filters
     public String getNotesResponse(Map<String, String> kv) {
         lock.lock();
         try {
             String colorFilter = kv.getOrDefault("color", null);
-            String refersTo = kv.getOrDefault("refersto", null);
+            String refersTo = kv.getOrDefault("refersTo", null);
 
             Integer cx = null, cy = null;
             if (kv.containsKey("contains")) {
@@ -163,7 +159,6 @@ public class Board {
             lock.unlock();
         }
     }
-
     private boolean isNotePinned(Note n) {
         for (Pin p : pins) {
             if (n.contains(p.x(), p.y())) return true;
@@ -171,3 +166,4 @@ public class Board {
         return false;
     }
 }
+
