@@ -1,24 +1,16 @@
-public enum ErrorCode {
-   INVALID_FORMAT("INVALID_FORMAT"),
-   OUT_OF_BOUNDS("OUT_OF_BOUNDS"),
-   COMPLETE_OVERLAP("COMPLETE_OVERLAP"),
-   COLOR_NOT_SUPPORTED("COLOR_NOT_SUPPORTED"),
-   NO_NOTE_AT_COORDINATE("NO_NOTE_AT_COORDINATE"),
-   PIN_NOT_FOUND("PIN_NOT_FOUND"),
-   UNKNOWN_COMMAND("UNKNOWN_COMMAND"),
-   SERVER_ERROR("SERVER_ERROR");
+public record  Note(int x, int y, int w, int h, String color, String message) {
 
-
-   private final String code;
-
-   ErrorCode(String code) {
-       this.code = code;
+   public boolean contains(int px, int py) {
+       return px >= x && px < x + w && py >= y && py < y + h;
    }
-   public String msg(String detail) {
-       if (detail == null || detail.isBlank()) {
-           return "ERROR " + code;
-       }
-       return "ERROR " + code + " " + detail;
+
+   public boolean completelyOverlaps(Note other) {
+       return other.x() >= this.x()
+               && other.y() >= this.y()
+               && other.x() + other.w() <= this.x() + this.w()
+               && other.y() + other.h() <= this.y() + this.h();
    }
 }
+
+
 
