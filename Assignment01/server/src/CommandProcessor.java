@@ -10,11 +10,9 @@ public class CommandProcessor {
            return new CommandResult(ErrorCode.INVALID_FORMAT.msg("Empty Command") + "\n",false);
        }
 
-
        String trimmed = input.trim();
 
-
-       //To handl simple commands first
+       //to handl simple commands first
        if (trimmed.equalsIgnoreCase("SHAKE")) {
            return new CommandResult(board.shake() + "\n", false);
        }
@@ -33,7 +31,7 @@ public class CommandProcessor {
        try {
            switch (cmd) {
                case "POST":
-                   // based on the structure POST <x> <y> <color> <message>
+                   // post based on structure. 
                    if (parts.length < 5) {
                        return new CommandResult(ErrorCode.INVALID_FORMAT.msg("POST requires x y color message") + "\n", false);
                    }
@@ -43,23 +41,19 @@ public class CommandProcessor {
                    String message = joinFrom(parts, 4);
                    return new CommandResult(board.postNote(x, y, color, message) + "\n", false);
 
-
                case "PIN":
                    if (parts.length != 3) {
                        return new CommandResult(ErrorCode.INVALID_FORMAT.msg("PIN requires x y") + "\n", false);
                    }
                    return new CommandResult(board.pin(Integer.parseInt(parts[1]), Integer.parseInt(parts[2])) + "\n", false);
-
-
                case "UNPIN":
                    if (parts.length != 3) {
                        return new CommandResult(ErrorCode.INVALID_FORMAT.msg("UNPIN requires x y") + "\n", false);
                    }
                    return new CommandResult(board.unpin(Integer.parseInt(parts[1]), Integer.parseInt(parts[2])) + "\n", false);
 
-
                case "GET":
-                   // either: GET PINS or GET color=.. contains=x y refersTo=..
+    
                    if (parts.length == 2 && parts[1].equalsIgnoreCase("PINS")) {
                        return new CommandResult(board.getPinsResponse(), false);
                    }
@@ -77,7 +71,6 @@ public class CommandProcessor {
        }
    }
 
-
    private static String joinFrom(String[] parts, int idx) {
        StringBuilder sb = new StringBuilder();
        for (int i = idx; i < parts.length; i++) {
@@ -87,43 +80,39 @@ public class CommandProcessor {
        return sb.toString();
    }
 
-
    // parse things colour=white
    private static Map<String, String> parseKeyValues(String s) {
        Map<String, String> map = new HashMap<>();
        if (s.isEmpty()) return map;
 
 
-       // crude but effective: split by spaces, keep tokens with '='
-       // Special case: contains=15 12 (two numbers)
+       // Special case contains two numebr 
        String[] tokens = s.split(" ");
        for (int i = 0; i < tokens.length; i++) {
            if (!tokens[i].contains("=")) continue;
-
 
            String[] kv = tokens[i].split("=", 2);
            String key = kv[0];
            String val = kv.length == 2 ? kv[1] : "";
 
-
            if (key.equalsIgnoreCase("contains")) {
-               // expects 2 numbers; might be in same token or next token
+               // expects two numbers 
                if (val.isEmpty() && i + 2 < tokens.length) {
                    val = tokens[i + 1] + " " + tokens[i + 2];
                    i += 2;
                } else if (i + 1 < tokens.length && !tokens[i + 1].contains("=")) {
-                   // contains=15 then 12 next
+            
                    val = val + " " + tokens[i + 1];
                    i += 1;
                }
            }
-
-
            map.put(key.toLowerCase(), val);
        }
        return map;
    }
 }
+
+
 
 
 
