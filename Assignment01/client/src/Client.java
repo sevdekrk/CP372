@@ -3,9 +3,7 @@ import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
 
-
 public class Client {
-
 
    public static void main(String[] args) {
        try (
@@ -14,27 +12,22 @@ public class Client {
                PrintWriter out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()), true);
                Scanner scanner = new Scanner(System.in)
        ) {
-           // Read 3-line handshake
+           //ahdnshake
            System.out.println(in.readLine());
            System.out.println(in.readLine());
            System.out.println(in.readLine());
-
 
            while (true) {
                System.out.print("> ");
                String input = scanner.nextLine();
                out.println(input);
 
-
-               // Read first response line
+               //first line
                String first = in.readLine();
                if (first == null) break;
-
-
                System.out.println(first);
 
-
-               // If response is OK N, then read N more lines (NOTE... or PIN...)
+               // If ok response then read further
                if (first.startsWith("OK ")) {
                    String[] parts = first.split(" ");
                    if (parts.length == 2) {
@@ -46,17 +39,15 @@ public class Client {
                        } catch (NumberFormatException ignored) {}
                    }
                }
-
-
                if (input.trim().equalsIgnoreCase("DISCONNECT")) {
                    break;
                }
            }
-
 
        } catch (IOException e) {
            e.printStackTrace();
        }
    }
 }
+
 
