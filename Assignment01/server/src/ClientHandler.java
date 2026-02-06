@@ -7,14 +7,10 @@ public class ClientHandler implements Runnable {
 
    private final Socket socket;
    private final Board board;
-
-
    public ClientHandler(Socket socket, Board board) {
        this.socket = socket;
        this.board = board;
    }
-
-
    @Override
    public void run() {
        try (
@@ -23,7 +19,7 @@ public class ClientHandler implements Runnable {
            PrintWriter out = new PrintWriter(
                socket.getOutputStream(), true)
        ) {
-           // Handshake: 3 lines (you can adjust tokens, but keep 3 lines)
+           // handshake which is 3 liones 
            out.print("BOARD " + board.getBoardWidth() + " " + board.getBoardHeight() + "\n");
            out.print("NOTE " + board.getNoteWidth() + " " + board.getNoteHeight() + "\n");
            out.print("COLORS " + String.join(" ", board.getValidColors()) + "\n");
@@ -36,7 +32,7 @@ public class ClientHandler implements Runnable {
 
 
                //allow multi line responses
-               out.print(result.response());  // response already includes trailing \n's
+               out.print(result.response()); 
                out.flush();
 
 
@@ -55,6 +51,8 @@ public class ClientHandler implements Runnable {
        }
    }
 }
+
+
 
 
 
